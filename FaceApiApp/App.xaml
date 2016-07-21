@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="FaceApiUwpApp.App"
+    x:Class="FaceApiApp.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FaceApiUwpApp"
+    xmlns:local="using:FaceApiApp"
     RequestedTheme="Light">
 
 </Application>

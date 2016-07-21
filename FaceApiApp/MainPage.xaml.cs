@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face.Contract;
 using System.IO;
 using System.Linq;
-using System.Diagnostics;
-using System.Windows.Media;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace FaceApiUwpApp
+namespace FaceApiApp
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -22,7 +20,7 @@ namespace FaceApiUwpApp
     public sealed partial class MainPage : Page
     {
         private readonly IFaceServiceClient _faceServiceClient = new FaceServiceClient("API_KEY_HERE");
-        private string _filePath = string.Empty;
+        private StorageFile _imageFile;
 
         public MainPage()
         {
@@ -41,12 +39,11 @@ namespace FaceApiUwpApp
             openPicker.FileTypeFilter.Add(".jpg");
             openPicker.FileTypeFilter.Add(".png");
 
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            _filePath = file.Path;
+            _imageFile = await openPicker.PickSingleFileAsync();
 
-            if (file != null)
+            if (_imageFile != null)
             {
-                var stream = await file.OpenAsync(FileAccessMode.Read);
+                var stream = await _imageFile.OpenAsync(FileAccessMode.Read);
                 var image = new BitmapImage();
                 image.SetSource(stream);
                 FacePhoto.Source = image;
@@ -61,50 +58,21 @@ namespace FaceApiUwpApp
 
         private async void FindFaceButton_Click(object sender, RoutedEventArgs e)
         {
-            FaceRectangle[] faceRects = await UploadAndDetectFaces(_filePath);
+            FaceRectangle[] faceRects = await UploadAndDetectFaces();
             StatusField.Text = $"Detection Finished. {faceRects.Length} face(s) detected";
 
             if (faceRects.Length > 0)
             {
-                DrawingVisual visual = new DrawingVisual();
-                //DrawingContext drawingContext = visual.RenderOpen();
-                //drawingContext.DrawImage(bitmapSource,
-                //    new Rect(0, 0, bitmapSource.Width, bitmapSource.Height));
-                //double dpi = bitmapSource.DpiX;
-                //double resizeFactor = 96 / dpi;
-
-                //foreach (var faceRect in faceRects)
-                //{
-                //    drawingContext.DrawRectangle(
-                //        Brushes.Transparent,
-                //        new Pen(Brushes.Red, 2),
-                //        new Rect(
-                //            faceRect.Left * resizeFactor,
-                //            faceRect.Top * resizeFactor,
-                //            faceRect.Width * resizeFactor,
-                //            faceRect.Height * resizeFactor
-                //            )
-                //    );
-                //}
-
-                //drawingContext.Close();
-                //RenderTargetBitmap faceWithRectBitmap = new RenderTargetBitmap(
-                //    (int)(bitmapSource.PixelWidth * resizeFactor),
-                //    (int)(bitmapSource.PixelHeight * resizeFactor),
-                //    96,
-                //    96,
-                //    PixelFormats.Pbgra32);
-
-                //faceWithRectBitmap.Render(visual);
-                FacePhoto.Source = faceWithRectBitmap;
+                MarkFaces(faceRects);
             }
         }
 
-        private async Task<FaceRectangle[]> UploadAndDetectFaces(string imageFilePath)
+        private async Task<FaceRectangle[]> UploadAndDetectFaces()
         {
             try
             {
-                using (Stream imageFileStream = File.OpenRead(imageFilePath))
+                StatusField.Text = "Status: Detecting...";
+                using (Stream imageFileStream = await _imageFile.OpenStreamForReadAsync())
                 {
                     var faces = await _faceServiceClient.DetectAsync(imageFileStream);
                     var faceRects = faces.Select(face => face.FaceRectangle);
@@ -114,9 +82,44 @@ namespace FaceApiUwpApp
             }
             catch (Exception ex)
             {
-                StatusField.Text = ex.Message;
+                StatusField.Text = $"Status: {ex.Message}";
                 return new FaceRectangle[0];
             }
+        }
+        
+        private void MarkFaces(FaceRectangle[] faceRects)
+        {
+            //DrawingVisual visual = new DrawingVisual();
+            //DrawingContext drawingContext = visual.RenderOpen();
+            //drawingContext.DrawImage(bitmapSource,
+            //    new Rect(0, 0, bitmapSource.Width, bitmapSource.Height));
+            //double dpi = bitmapSource.DpiX;
+            //double resizeFactor = 96 / dpi;
+
+            //foreach (var faceRect in faceRects)
+            //{
+            //    drawingContext.DrawRectangle(
+            //        Brushes.Transparent,
+            //        new Pen(Brushes.Red, 2),
+            //        new Rect(
+            //            faceRect.Left * resizeFactor,
+            //            faceRect.Top * resizeFactor,
+            //            faceRect.Width * resizeFactor,
+            //            faceRect.Height * resizeFactor
+            //            )
+            //    );
+            //}
+
+            //drawingContext.Close();
+            //RenderTargetBitmap faceWithRectBitmap = new RenderTargetBitmap(
+            //    (int)(bitmapSource.PixelWidth * resizeFactor),
+            //    (int)(bitmapSource.PixelHeight * resizeFactor),
+            //    96,
+            //    96,
+            //    PixelFormats.Pbgra32);
+
+            //faceWithRectBitmap.Render(visual);
+            //FacePhoto.Source = faceWithRectBitmap;
         }
     }
 }

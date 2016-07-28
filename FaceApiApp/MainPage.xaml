@@ -4,16 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Width="525" Height="350">
+    mc:Ignorable="d" Width="600" Height="550">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120" />
-            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="150" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Canvas x:Name="FaceCanvas" Visibility="Visible" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" />
@@ -21,5 +23,11 @@
         <Button x:Name="BrowseButton" Content="Browse..." Click="BrowseButton_Click" Grid.Row="1" Grid.Column="0" Width="100" HorizontalAlignment="Center" />
         <Button x:Name="FindFaceButton" Content="Find face..." Click="FindFaceButton_Click" Grid.Row="1" Grid.Column="1" Width="100" HorizontalAlignment="Center" />
         <TextBlock x:Name="StatusField" Text="Status: waiting..." Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" />
+
+        <Button x:Name="GeneratePersonGroupButton" Content="Generate group" Grid.Row="2" Grid.Column="0" Width="130" HorizontalAlignment="Center" Click="GeneratePersonGroupButton_Click" />
+        <Button x:Name="TrainGroupButton" Content="Train group" Grid.Row="2" Grid.Column="1" Width="100" HorizontalAlignment="Center" Click="TrainGroupButton_Click" />
+        <Button x:Name="IdentifyFace" Content="Identify" Click="IdentifyFace_Click" Grid.Row="2" Grid.Column="2" Width="100" HorizontalAlignment="Left" />
+        
+        <TextBlock x:Name="NameField" Text="Unknown face..." Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" />
     </Grid>
 </Page>

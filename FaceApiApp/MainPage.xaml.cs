@@ -13,8 +13,6 @@ using Windows.Graphics.Imaging;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -32,6 +30,8 @@ namespace FaceApiApp
         public MainPage()
         {
             this.InitializeComponent();
+            TrainGroupButton.IsEnabled = false;
+            IdentifyFace.IsEnabled = false;
         }
 
         private async void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -144,6 +144,21 @@ namespace FaceApiApp
                     FaceCanvas.Children.Add(box);
                 }
             }
+        }
+
+        private void IdentifyFace_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GeneratePersonGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            TrainGroupButton.IsEnabled = true;
+        }
+
+        private void TrainGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            IdentifyFace.IsEnabled = true;
         }
     }
 }

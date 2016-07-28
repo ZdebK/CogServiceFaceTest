@@ -106,6 +106,30 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PersonGroup\Family1-Dad\Family1-Dad1.jpg" />
+    <Content Include="PersonGroup\Family1-Dad\Family1-Dad2.jpg" />
+    <Content Include="PersonGroup\Family1-Dad\Family1-Dad3.jpg" />
+    <Content Include="PersonGroup\Family1-Daughter\Family1-Daughter1.jpg" />
+    <Content Include="PersonGroup\Family1-Daughter\Family1-Daughter2.jpg" />
+    <Content Include="PersonGroup\Family1-Daughter\Family1-Daughter3.jpg" />
+    <Content Include="PersonGroup\Family1-Mom\Family1-Mom1.jpg" />
+    <Content Include="PersonGroup\Family1-Mom\Family1-Mom2.jpg" />
+    <Content Include="PersonGroup\Family1-Mom\Family1-Mom3.jpg" />
+    <Content Include="PersonGroup\Family1-Son\Family1-Son1.jpg" />
+    <Content Include="PersonGroup\Family1-Son\Family1-Son2.jpg" />
+    <Content Include="PersonGroup\Family1-Son\Family1-Son3.jpg" />
+    <Content Include="PersonGroup\Family2-Lady\Family2-Lady1.jpg" />
+    <Content Include="PersonGroup\Family2-Lady\Family2-Lady2.jpg" />
+    <Content Include="PersonGroup\Family2-Lady\Family2-Lady3.jpg" />
+    <Content Include="PersonGroup\Family2-Man\Family2-Man1.jpg" />
+    <Content Include="PersonGroup\Family2-Man\Family2-Man2.jpg" />
+    <Content Include="PersonGroup\Family2-Man\Family2-Man3.jpg" />
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady1.jpg" />
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady2.jpg" />
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady4.jpg" />
+    <Content Include="PersonGroup\Family3-Man\Family3-Man1.jpg" />
+    <Content Include="PersonGroup\Family3-Man\Family3-Man2.jpg" />
+    <Content Include="PersonGroup\Family3-Man\Family3-Man3.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -125,6 +149,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

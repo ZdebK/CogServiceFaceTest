@@ -164,14 +164,14 @@ namespace FaceApiApp
                 foreach(var identityResult in results)
                 {
                     if (identityResult.Candidates.Length != 0)
-                    {
-                        var candidateId = identityResult.Candidates[0].PersonId;
+                    { 
+                        var candidateId = identityResult.Candidates[0].PersonId; 
                         var person = await _faceServiceClient.GetPersonAsync(_personGroupId, candidateId);
                         resultText.Append($"Detected: {person.Name}\t");
-                    }
+                    } 
                 }
 
-                if (resultText.Length == 0)
+                if (resultText.ToString().Equals($"{results.Length} face(s) detected! \t"))
                     resultText.Append("No persons identified");
 
                 NameField.Text = resultText.ToString();
@@ -221,7 +221,7 @@ namespace FaceApiApp
             {
                 status = await _faceServiceClient.GetPersonGroupTrainingStatusAsync(_personGroupId);
                 
-                if(status.Status.ToString() != "running")
+                if(status.Status != Status.Running)
                 {
                     NameField.Text = "Person group training complete";
                     IdentifyFace.IsEnabled = true;

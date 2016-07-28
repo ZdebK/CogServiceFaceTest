@@ -13,6 +13,7 @@ using Windows.Graphics.Imaging;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using System.Text;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,11 +27,11 @@ namespace FaceApiApp
         private readonly IFaceServiceClient _faceServiceClient = new FaceServiceClient("API_KEY_HERE");
         private StorageFile _imageFile;
         private SoftwareBitmap _bitmapSource;
+        private const string _personGroupId = "family3";
 
         public MainPage()
         {
             this.InitializeComponent();
-            TrainGroupButton.IsEnabled = false;
             IdentifyFace.IsEnabled = false;
         }
 
@@ -146,19 +147,89 @@ namespace FaceApiApp
             }
         }
 
-        private void IdentifyFace_Click(object sender, RoutedEventArgs e)
+        private async void IdentifyFace_Click(object sender, RoutedEventArgs e)
         {
+            using (Stream s = await _imageFile.OpenStreamForReadAsync())
+            {
+                var faces = await _faceServiceClient.DetectAsync(s);
+                var faceIds = faces.Select(face => face.FaceId).ToArray();
 
+                StringBuilder resultText = new StringBuilder();
+
+                var results = await _faceServiceClient.IdentifyAsync(_personGroupId, faceIds);
+
+                if (results.Length > 0)
+                    resultText.Append($"{results.Length} face(s) detected! \t");
+
+                foreach(var identityResult in results)
+                {
+                    if (identityResult.Candidates.Length != 0)
+                    {
+                        var candidateId = identityResult.Candidates[0].PersonId;
+                        var person = await _faceServiceClient.GetPersonAsync(_personGroupId, candidateId);
+                        resultText.Append($"Detected: {person.Name}\t");
+                    }
+                }
+
+                if (resultText.Length == 0)
+                    resultText.Append("No persons identified");
+
+                NameField.Text = resultText.ToString();
+            }
         }
 
-        private void GeneratePersonGroupButton_Click(object sender, RoutedEventArgs e)
+        private async void GeneratePersonGroupButton_Click(object sender, RoutedEventArgs e)
         {
-            TrainGroupButton.IsEnabled = true;
+            var personGroup = await _faceServiceClient.GetPersonGroupAsync(_personGroupId);
+
+            if(personGroup == null)
+                await _faceServiceClient.CreatePersonGroupAsync(_personGroupId, "Family 3");
+            
+            var lady3 = await _faceServiceClient.CreatePersonAsync(_personGroupId, "Lily");
+            var man3 = await _faceServiceClient.CreatePersonAsync(_personGroupId, "Marshall");
+
+            string lady3ImageDir = @"./PersonGroup/Family3-Lady/";
+
+            foreach(var path in Directory.GetFiles(lady3ImageDir, "*.jpg"))
+            {
+                using (Stream s = File.OpenRead(path))
+                {
+                    await _faceServiceClient.AddPersonFaceAsync(_personGroupId, lady3.PersonId, s);
+                }
+            }
+
+            string man3ImageDir = @"./PersonGroup/Family3-Man/";
+
+            foreach (var path in Directory.GetFiles(man3ImageDir, "*.jpg"))
+            {
+                using (Stream s = File.OpenRead(path))
+                {
+                    await _faceServiceClient.AddPersonFaceAsync(_personGroupId, man3.PersonId, s);
+                }
+            }
+
+            NameField.Text = "Generated person group";
         }
 
-        private void TrainGroupButton_Click(object sender, RoutedEventArgs e)
+        private async void TrainGroupButton_Click(object sender, RoutedEventArgs e)
         {
-            IdentifyFace.IsEnabled = true;
+            await _faceServiceClient.TrainPersonGroupAsync(_personGroupId);
+
+            TrainingStatus status = null;
+
+            while(true)
+            {
+                status = await _faceServiceClient.GetPersonGroupTrainingStatusAsync(_personGroupId);
+                
+                if(status.Status.ToString() != "running")
+                {
+                    NameField.Text = "Person group training complete";
+                    IdentifyFace.IsEnabled = true;
+                    break;
+                }
+
+                await Task.Delay(1000);
+            }
         }
     }
 }

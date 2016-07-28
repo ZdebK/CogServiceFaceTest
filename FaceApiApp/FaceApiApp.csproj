@@ -124,12 +124,24 @@
     <Content Include="PersonGroup\Family2-Man\Family2-Man1.jpg" />
     <Content Include="PersonGroup\Family2-Man\Family2-Man2.jpg" />
     <Content Include="PersonGroup\Family2-Man\Family2-Man3.jpg" />
-    <Content Include="PersonGroup\Family3-Lady\Family3-Lady1.jpg" />
-    <Content Include="PersonGroup\Family3-Lady\Family3-Lady2.jpg" />
-    <Content Include="PersonGroup\Family3-Lady\Family3-Lady4.jpg" />
-    <Content Include="PersonGroup\Family3-Man\Family3-Man1.jpg" />
-    <Content Include="PersonGroup\Family3-Man\Family3-Man2.jpg" />
-    <Content Include="PersonGroup\Family3-Man\Family3-Man3.jpg" />
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PersonGroup\Family3-Lady\Family3-Lady4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PersonGroup\Family3-Man\Family3-Man1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PersonGroup\Family3-Man\Family3-Man2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PersonGroup\Family3-Man\Family3-Man3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

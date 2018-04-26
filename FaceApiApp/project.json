@@ -1,13 +1,13 @@
 ﻿{
   "dependencies": {
-    "Microsoft.ApplicationInsights": "1.0.0",
-    "Microsoft.ApplicationInsights.PersistenceChannel": "1.0.0",
-    "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "Microsoft.ProjectOxford.Face": "1.1.0"
+    "Microsoft.ApplicationInsights": "2.6.0-beta4",
+    "Microsoft.ApplicationInsights.PersistenceChannel": "2.0.0-beta3",
+    "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8",
+    "Microsoft.ProjectOxford.Face": "1.4.0"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10240": {}
   },
   "runtimes": {
     "win10-arm": {},

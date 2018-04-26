@@ -24,7 +24,7 @@ namespace FaceApiApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private readonly IFaceServiceClient _faceServiceClient = new FaceServiceClient("API_KEY_HERE");
+        private readonly IFaceServiceClient _faceServiceClient = new FaceServiceClient("FACE_API_KEY", "https://westeurope.api.cognitive.microsoft.com/face/v1.0");
         private StorageFile _imageFile;
         private SoftwareBitmap _bitmapSource;
         private const string _personGroupId = "family3";
@@ -166,7 +166,7 @@ namespace FaceApiApp
                     if (identityResult.Candidates.Length != 0)
                     { 
                         var candidateId = identityResult.Candidates[0].PersonId; 
-                        var person = await _faceServiceClient.GetPersonAsync(_personGroupId, candidateId);
+                        var person = await _faceServiceClient.GetPersonInPersonGroupAsync(_personGroupId, candidateId);
                         resultText.Append($"Detected: {person.Name}\t");
                     } 
                 }
@@ -180,13 +180,22 @@ namespace FaceApiApp
 
         private async void GeneratePersonGroupButton_Click(object sender, RoutedEventArgs e)
         {
-            var personGroup = await _faceServiceClient.GetPersonGroupAsync(_personGroupId);
+            PersonGroup personGroup = null;
+
+            try
+            {
+                personGroup = await _faceServiceClient.GetPersonGroupAsync(_personGroupId);
+            }
+            catch(FaceAPIException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             if(personGroup == null)
                 await _faceServiceClient.CreatePersonGroupAsync(_personGroupId, "Family 3");
             
-            var lady3 = await _faceServiceClient.CreatePersonAsync(_personGroupId, "Lily");
-            var man3 = await _faceServiceClient.CreatePersonAsync(_personGroupId, "Marshall");
+            var lady3 = await _faceServiceClient.CreatePersonInPersonGroupAsync(_personGroupId, "Lily");
+            var man3 = await _faceServiceClient.CreatePersonInPersonGroupAsync(_personGroupId, "Marshall");
 
             string lady3ImageDir = @"./PersonGroup/Family3-Lady/";
 
@@ -194,7 +203,7 @@ namespace FaceApiApp
             {
                 using (Stream s = File.OpenRead(path))
                 {
-                    await _faceServiceClient.AddPersonFaceAsync(_personGroupId, lady3.PersonId, s);
+                    await _faceServiceClient.AddPersonFaceInPersonGroupAsync(_personGroupId, lady3.PersonId, s);
                 }
             }
 
@@ -204,7 +213,7 @@ namespace FaceApiApp
             {
                 using (Stream s = File.OpenRead(path))
                 {
-                    await _faceServiceClient.AddPersonFaceAsync(_personGroupId, man3.PersonId, s);
+                    await _faceServiceClient.AddPersonFaceInPersonGroupAsync(_personGroupId, man3.PersonId, s);
                 }
             }
 
